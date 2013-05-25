@@ -56,6 +56,7 @@ public class MainActivity extends Activity {
 				FileOutputStream outstream = new FileOutputStream(jpgFile);
 				outstream.write(data);
 				outstream.close();
+			    camera.startPreview();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -78,7 +79,6 @@ public class MainActivity extends Activity {
 		     parameters.setJpegQuality(80);
 		     camera.setParameters(parameters);
 		     camera.setPreviewDisplay(holder);
-		     camera.startPreview();//¿ªÊ¼Ô¤ÀÀ
 		}catch(Exception e){
 			e.printStackTrace();
 		}	
@@ -90,8 +90,6 @@ public class MainActivity extends Activity {
 				camera=null;
 			}
 	}
-	
-	
 	
 	
 }
