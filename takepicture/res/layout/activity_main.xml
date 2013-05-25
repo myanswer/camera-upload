@@ -1,36 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LeanerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
- >
+    android:layout_height="fill_parent" >
+
     <SurfaceView
+        android:id="@+id/surfaceView"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:id="@+id/surfaceView" />
-    <RelativeLayout
+        android:layout_height="0dp" />
+
+    <LeanerLayout
+        android:id="@+id/buttonlayout"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:visibility="gone"
-        android:id="@+id/buttonlayout">
+        android:layout_height="45dp"
+        android:visibility="gone" >
+
         <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"  
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginRight="5dp"
-        android:text="@string/takepicture"
-        android:onClick="takepicture"
-        android:id="@+id/takepicture"
-        />
+            android:id="@+id/takepicture"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="5dp"
+            android:onClick="takepicture"
+            android:text="@string/takepicture" />
+
         <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" 
-        android:layout_toLeftOf="@+id/takepicture" 
-        android:layout_alignTop="@+id/takepicture"
-        android:layout_marginRight="20dp"
-        android:text="@string/autofocus"
-        android:onClick="takepicture"
-        android:id="@+id/autofocus"
-        />
-      </RelativeLayout>  
-</FrameLayout>
+            android:id="@+id/autofocus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/takepicture"
+            android:layout_marginRight="20dp"
+            android:layout_toLeftOf="@+id/takepicture"
+            android:onClick="takepicture"
+            android:text="@string/autofocus" />
+    </LeanerLayout>
+
+</LeanerLayout>
