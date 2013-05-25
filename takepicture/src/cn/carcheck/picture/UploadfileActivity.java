@@ -31,9 +31,9 @@ public class UploadfileActivity extends Activity {
 		setContentView(R.layout.activity_uploadfile);
 
 		mText1 = (TextView) findViewById(R.id.myText2);
-		mText1.setText("�ļ�·����\n" + uploadFile);
+		mText1.setText("文件名称\n" + uploadFile);
 		mText2 = (TextView) findViewById(R.id.myText3);
-		mText2.setText("�ϴ���ַ��\n" + actionUrl);
+		mText2.setText("上传路径\n" + actionUrl);
 		/* ����mButton��onClick�¼����� */
 		mButton = (Button) findViewById(R.id.myButton);
 		mButton.setOnClickListener(new View.OnClickListener() {
