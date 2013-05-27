@@ -11,15 +11,17 @@ import android.widget.Button;
 import android.widget.EditText;
 
 public class CarnumberActivity extends Activity {
-
+    //界面初始化
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		this.setContentView(R.layout.activity_carnumber);
 		this.setstartButtonListener();
 	}
 
+/**
+ * 设置监听器
+ * */
 	private void setstartButtonListener() {
 
 		Button btn = (Button) this.findViewById(R.id.start);
@@ -36,7 +38,9 @@ public class CarnumberActivity extends Activity {
 		});
 
 	}
-
+	/**
+	 * 创建文件的路径
+	 * */
 	private File creatfile() {
 		EditText edit = (EditText) this.findViewById(R.id.carnum);
 		String str = edit.getText().toString();

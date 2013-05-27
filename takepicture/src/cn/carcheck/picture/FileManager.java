@@ -1,7 +1,9 @@
 package cn.carcheck.picture;
 
 import java.io.File;
-
+/**
+ * 文件管理器
+ * */
 public class FileManager {
 	private File m_path;
 

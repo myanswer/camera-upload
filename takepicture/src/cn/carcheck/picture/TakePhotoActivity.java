@@ -2,25 +2,21 @@ package cn.carcheck.picture;
 
 import java.io.File;
 import java.io.FileOutputStream;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.hardware.Camera;
 import android.hardware.Camera.PictureCallback;
 import android.os.Bundle;
-import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceHolder.Callback;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 
 public class TakePhotoActivity extends Activity {
-	private View layout;
 	private Camera camera;
 	private FileManager mFileManager;
 
@@ -32,8 +28,6 @@ public class TakePhotoActivity extends Activity {
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
 		setContentView(R.layout.activity_camera);
-
-		layout = this.findViewById(R.id.buttonlayout);
 
 		{
 			SurfaceView surfaceView = (SurfaceView) this
@@ -48,7 +42,7 @@ public class TakePhotoActivity extends Activity {
 
 		this.setupButtonListenerForUpload();
 		this.setupButtonListenerForTakephoto();
-
+        this.setupButtonListenerForAutofocus();
 	}
 
 	@Override
@@ -95,18 +89,18 @@ public class TakePhotoActivity extends Activity {
 
 	}
 
-	public void takepicture(View v) {
-		if (camera != null) {
-			switch (v.getId()) {
-			case R.id.takepicture:
-				camera.takePicture(null, null, new MyPictureCallback());
-				break;
-			case R.id.autofocus:
-				camera.autoFocus(null);
-			default:
-				break;
+	private void setupButtonListenerForAutofocus() {
+
+		Button btn = (Button) this.findViewById(R.id.button_focus);
+		btn.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				TakePhotoActivity pThis = TakePhotoActivity.this;
+				pThis.camera.autoFocus(null);
 			}
-		}
+		});
+
 	}
 
 	private final class MyPictureCallback implements PictureCallback {
@@ -135,9 +129,7 @@ public class TakePhotoActivity extends Activity {
 		public void surfaceCreated(SurfaceHolder holder) {
 			System.out.println(this + ".surfaceCreated");
 			try {
-				camera = Camera.open();// ������ͷ
-				boolean noused = true;
-				if (!noused) {
+				    camera = Camera.open();// 摄像头的初始化				
 					Camera.Parameters parameters = camera.getParameters();
 					// Log.i("MainActivity", parameters.flatten());
 					parameters.setPreviewSize(800, 480);
@@ -145,7 +137,7 @@ public class TakePhotoActivity extends Activity {
 					parameters.setPictureSize(1024, 768);
 					parameters.setJpegQuality(80);
 					camera.setParameters(parameters);
-				}
+				
 				camera.setPreviewDisplay(holder);
 				camera.startPreview();
 			} catch (Exception e) {
@@ -162,14 +154,5 @@ public class TakePhotoActivity extends Activity {
 		}
 
 	}
-
-	@Override
-	public boolean onTouchEvent(MotionEvent event) {
-		if (event.getAction() == MotionEvent.ACTION_DOWN) {
-			layout.setVisibility(ViewGroup.VISIBLE);
-			return true;
-		}
-		return super.onTouchEvent(event);
-	}
-
+		
 }

@@ -2,6 +2,7 @@ package cn.carcheck.picture;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -16,14 +17,41 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class UploadfileActivity extends Activity {
-	// Ҫ�ϴ����ļ�·���������Ͽ��Դ����κ��ļ���ʵ��ʹ��ʱ�����Ҫ����
-	private String uploadFile = "/sdcard/testimg.jpg";
-	private String srcPath = "/sdcard/testimg.jpg";
-	// �������Ͻ����ļ��Ĵ���ҳ�棬��������Ҫ�����Լ���
-	private String actionUrl = "http://10.100.1.208/receive_file.php";
+	// 要上传的文件路径，理论上可以传输任何文件，实际使用时根据需要处理 
+	private String uploadFile;
+	private String srcPath;
+	// 服务器上接收文件的处理页面
+	private String actionUrl = "http://192.168.1.103/receive_file.php";
 	private TextView mText1;
 	private TextView mText2;
 	private Button mButton;
+
+	@Override
+	protected void onResume() {
+
+		super.onResume();
+		String path = this.getIntent().getStringExtra(Const.car_dir_path);
+		if (path != null) {
+			File file = new File(path);
+			file.mkdirs();
+			
+		    this.uploadFile=this.srcPath=file.getAbsolutePath();
+		    		
+		    
+		 File[] list = file.listFiles();
+		 for (File file2:list) {
+			 System.out.println(file2);
+			    this.doUpload( file2 ) ;
+		 }
+		    }
+		mText1.setText("文件名称\n" + uploadFile);
+		mText2.setText("上传路径\n" + actionUrl);
+	}
+
+	private void doUpload(File file) {
+		// TODO Auto-generated method stub
+		
+	}
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -34,7 +62,7 @@ public class UploadfileActivity extends Activity {
 		mText1.setText("文件名称\n" + uploadFile);
 		mText2 = (TextView) findViewById(R.id.myText3);
 		mText2.setText("上传路径\n" + actionUrl);
-		/* ����mButton��onClick�¼����� */
+		/*设置mButton的onClick事件处理*/
 		mButton = (Button) findViewById(R.id.myButton);
 		mButton.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -44,7 +72,7 @@ public class UploadfileActivity extends Activity {
 		});
 	}
 
-	/* �ϴ��ļ���Server��uploadUrl�������ļ��Ĵ���ҳ�� */
+	/*上传文件至Server，uploadUrl：接收文件的处理页面 */
 	private void uploadFile(String uploadUrl) {
 		String end = "\r\n";
 		String twoHyphens = "--";
@@ -53,14 +81,15 @@ public class UploadfileActivity extends Activity {
 			URL url = new URL(uploadUrl);
 			HttpURLConnection httpURLConnection = (HttpURLConnection) url
 					.openConnection();
-			// ����ÿ�δ��������С��������Ч��ֹ�ֻ���Ϊ�ڴ治�����
-			// �˷���������Ԥ�Ȳ�֪�����ݳ���ʱ����û�н����ڲ������ HTTP �������ĵ�����
+			// 设置每次传输的流大小，可以有效防止手机因为内存不足崩溃  
+	       // 此方法用于在预先不知道内容长度时启用没有进行内部缓冲的 HTTP 请求正文的流。
+
 			httpURLConnection.setChunkedStreamingMode(128 * 1024);// 128K
-			// �������������
+			//允许输入输出流
 			httpURLConnection.setDoInput(true);
 			httpURLConnection.setDoOutput(true);
 			httpURLConnection.setUseCaches(false);
-			// ʹ��POST����
+			// 使用POST方法
 			httpURLConnection.setRequestMethod("POST");
 			httpURLConnection.setRequestProperty("Connection", "Keep-Alive");
 			httpURLConnection.setRequestProperty("Charset", "UTF-8");
