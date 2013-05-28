@@ -11,7 +11,10 @@ import android.widget.Button;
 import android.widget.EditText;
 
 public class CarnumberActivity extends Activity {
-    //界面初始化
+
+	private final FileManager mFileManager = new FileManager();
+
+	// 界面初始化
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -19,9 +22,9 @@ public class CarnumberActivity extends Activity {
 		this.setstartButtonListener();
 	}
 
-/**
- * 设置监听器
- * */
+	/**
+	 * 设置监听器
+	 * */
 	private void setstartButtonListener() {
 
 		Button btn = (Button) this.findViewById(R.id.start);
@@ -30,14 +33,19 @@ public class CarnumberActivity extends Activity {
 			@Override
 			public void onClick(View arg0) {
 				CarnumberActivity pThis = CarnumberActivity.this;
+
 				String path = pThis.creatfile().getAbsolutePath();
+				pThis.mFileManager.getProperties().setProperty(
+						Const.car_dir_path, path);
+				pThis.mFileManager.save();
+
 				Intent intent = new Intent(pThis, TakePhotoActivity.class);
-				intent.putExtra(Const.car_dir_path, path);
 				pThis.startActivity(intent);
 			}
 		});
 
 	}
+
 	/**
 	 * 创建文件的路径
 	 * */
@@ -48,4 +56,11 @@ public class CarnumberActivity extends Activity {
 		file = new File(file, "takepicture/" + str);
 		return file;
 	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		this.mFileManager.load();
+	}
+
 }

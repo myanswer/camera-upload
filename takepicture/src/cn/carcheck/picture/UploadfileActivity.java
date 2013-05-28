@@ -1,10 +1,10 @@
 package cn.carcheck.picture;
 
-import java.io.File;
-
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -17,22 +17,15 @@ public class UploadfileActivity extends Activity {
 	private TextView mText1;
 	private TextView mText2;
 	private Button mButton;
-	private FileManager mFileManager;
+	private final FileManager mFileManager = new FileManager();
 
 	@Override
 	protected void onResume() {
 
 		super.onResume();
-		String path = this.getIntent().getStringExtra(Const.car_dir_path);
-		if (path != null) {
-			File file = new File(path);
-			file.mkdirs();
 
-			this.uploadFile = this.srcPath = file.getAbsolutePath();
+		this.mFileManager.load();
 
-			FileManager fm = new FileManager(file);
-			this.mFileManager = fm;
-		}
 		mText1.setText("文件名称\n" + uploadFile);
 		mText2.setText("上传路径\n" + actionUrl);
 	}
@@ -56,6 +49,27 @@ public class UploadfileActivity extends Activity {
 				UploadfileActivity.this.mFileManager.doUpload();
 			}
 		});
+
+		this.setupSettingsButtonListener();
+	}
+
+	private void setupSettingsButtonListener() {
+
+		Button button = (Button) this.findViewById(R.id.button_settings);
+		button.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+				UploadfileActivity.this.showSettingsActivity();
+			}
+		});
+	}
+
+	protected void showSettingsActivity() {
+		String path = this.mFileManager.getPath().getAbsolutePath();
+		Intent intent = new Intent(this, SettingsActivity.class);
+		intent.putExtra(Const.car_dir_path, path);
+		this.startActivity(intent);
 	}
 
 }

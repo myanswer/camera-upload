@@ -2,6 +2,7 @@ package cn.carcheck.picture;
 
 import java.io.File;
 import java.io.FileOutputStream;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.hardware.Camera;
@@ -18,7 +19,7 @@ import android.widget.Button;
 
 public class TakePhotoActivity extends Activity {
 	private Camera camera;
-	private FileManager mFileManager;
+	private final FileManager mFileManager = new FileManager();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -42,20 +43,13 @@ public class TakePhotoActivity extends Activity {
 
 		this.setupButtonListenerForUpload();
 		this.setupButtonListenerForTakephoto();
-        this.setupButtonListenerForAutofocus();
+		this.setupButtonListenerForAutofocus();
 	}
 
 	@Override
 	protected void onResume() {
-
 		super.onResume();
-		String path = this.getIntent().getStringExtra(Const.car_dir_path);
-		if (path != null) {
-			File file = new File(path);
-			file.mkdirs();
-			this.mFileManager = new FileManager(file);
-		}
-
+		this.mFileManager.load();
 	}
 
 	private void setupButtonListenerForUpload() {
@@ -109,6 +103,10 @@ public class TakePhotoActivity extends Activity {
 				File path = TakePhotoActivity.this.mFileManager.getPath();
 				File jpgFile = new File(path, System.currentTimeMillis()
 						+ ".jpg");
+				if (!jpgFile.exists()) {
+					jpgFile.getParentFile().mkdirs();
+					jpgFile.createNewFile();
+				}
 				FileOutputStream outstream = new FileOutputStream(jpgFile);
 				outstream.write(data);
 				outstream.close();
@@ -129,15 +127,18 @@ public class TakePhotoActivity extends Activity {
 		public void surfaceCreated(SurfaceHolder holder) {
 			System.out.println(this + ".surfaceCreated");
 			try {
-				    camera = Camera.open();// 摄像头的初始化				
-					Camera.Parameters parameters = camera.getParameters();
-					// Log.i("MainActivity", parameters.flatten());
-					parameters.setPreviewSize(800, 480);
-					parameters.setPreviewFrameRate(5);
-					parameters.setPictureSize(1024, 768);
-					parameters.setJpegQuality(80);
-					camera.setParameters(parameters);
-				
+				camera = Camera.open();// 摄像头的初始化
+				Camera.Parameters parameters = camera.getParameters();
+				// Log.i("MainActivity", parameters.flatten());
+
+				/*
+				 * parameters.setPreviewSize(800, 480);
+				 * parameters.setPreviewFrameRate(5);
+				 * parameters.setPictureSize(1024, 768);
+				 * parameters.setJpegQuality(80);
+				 * camera.setParameters(parameters);
+				 */
+
 				camera.setPreviewDisplay(holder);
 				camera.startPreview();
 			} catch (Exception e) {
@@ -154,5 +155,5 @@ public class TakePhotoActivity extends Activity {
 		}
 
 	}
-		
+
 }
