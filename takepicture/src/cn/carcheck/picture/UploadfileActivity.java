@@ -21,7 +21,7 @@ public class UploadfileActivity extends Activity {
 	private String uploadFile;
 	private String srcPath;
 	// 服务器上接收文件的处理页面
-	private String actionUrl = "http://192.168.1.103/receive_file.php";
+	private String actionUrl = "http://192.168.1.194/receive_file.php";
 	private TextView mText1;
 	private TextView mText2;
 	private Button mButton;
