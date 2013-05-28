@@ -35,8 +35,11 @@ public class FileUpload extends HttpServlet {
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 
-		ServletOutputStream out = response.getOutputStream();
+		response.setCharacterEncoding("UTF-8");
+
+		PrintWriter out = response.getWriter();
 		out.println(this + ".get ........ [ok]");
+		out.println("save to path : " + this.getBaseDir());
 	}
 
 	/**
