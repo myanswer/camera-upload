@@ -1,5 +1,7 @@
 package cn.carcheck.picture;
 
+import java.io.File;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -26,8 +28,17 @@ public class UploadfileActivity extends Activity {
 
 		this.mFileManager.load();
 
-		mText1.setText("文件名称\n" + uploadFile);
-		mText2.setText("上传路径\n" + actionUrl);
+		String file, url;
+		url = this.mFileManager.getProperties().getProperty(Const.upload_url);
+
+		file = "";
+		File dir = this.mFileManager.getPath();
+		for (File f : dir.listFiles()) {
+			file = file + f.getName() + "\n";
+		}
+
+		mText1.setText("文件名称\n" + file);
+		mText2.setText("上传URL\n" + url);
 	}
 
 	@Override
