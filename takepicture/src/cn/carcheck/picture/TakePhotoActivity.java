@@ -132,10 +132,10 @@ public class TakePhotoActivity extends Activity {
 				    camera = Camera.open();// 摄像头的初始化				
 					Camera.Parameters parameters = camera.getParameters();
 					// Log.i("MainActivity", parameters.flatten());
-					parameters.setPreviewSize(800, 480);
+					/*parameters.setPreviewSize(800, 480);
 					parameters.setPreviewFrameRate(5);
 					parameters.setPictureSize(1024, 768);
-					parameters.setJpegQuality(80);
+					parameters.setJpegQuality(80);*/
 					camera.setParameters(parameters);
 				
 				camera.setPreviewDisplay(holder);
