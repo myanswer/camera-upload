@@ -13,7 +13,6 @@ import android.widget.TextView;
 public class UploadfileActivity extends Activity {
 	// 要上传的文件路径，理论上可以传输任何文件，实际使用时根据需要处理
 	private String uploadFile;
-	private String srcPath;
 	// 服务器上接收文件的处理页面
 	private String actionUrl = "http://192.168.1.103/receive_file.php";
 	private TextView mText1;
